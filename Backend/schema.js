@@ -1,26 +1,44 @@
-const { makeExecutableSchema } = require('graphql-tools');
+const {
+  makeExecutableSchema
+} = require('graphql-tools');
 
 // Some fake data
-const todos = [];
+const todos = ["111","2222"];
 
 // The GraphQL schema in string form
-const typeDefs = `
+const query = `
+    
   type Query { 
-      books: [Book] 
+      listTodos: [String] 
     }
-  type Book { 
-      title: String, author: String 
+  type Mutation{
+      addTodos(todo: String!): [String]
     }
+
+    schema {
+        query: Query
+        mutation: Mutation
+      }
 `;
 
 // The resolvers
 const resolvers = {
-  Query: { books: () => books },
+  Query: {
+    listTodos: () =>{
+        return todos
+    }
+  },
+  Mutation: {
+    addTodos: (root, params, options) => {
+      todos.push(params.todo)
+      return todos
+    }
+  }
 };
 
 // Put together a schema
 const schema = makeExecutableSchema({
-  typeDefs,
+  typeDefs: query,
   resolvers,
 });
 
