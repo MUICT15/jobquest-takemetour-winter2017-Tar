@@ -13,6 +13,7 @@ const query = `
     }
   type Mutation{
       addTodos(todo: String!): [String]
+      remove(index: Int): [String]
     }
 
     schema {
@@ -32,6 +33,9 @@ const resolvers = {
     addTodos: (root, params, options) => {
       todos.push(params.todo)
       return todos
+    },
+    remove: (root , params , options)=>{
+      todos.splice(params.index ,1)
     }
   }
 };
